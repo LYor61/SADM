@@ -1,5 +1,3 @@
-SADM GitHub 美化README（可直接复制粘贴）
-下面为全部可直接复制的代码，全选复制、粘贴到GitHub仓库README.md即可，无需修改。
 # Single-Stage Signal Attenuation Diffusion Model for Low-Light Image Enhancement and Denoising
 **Official PyTorch implementation of SADM (arXiv:2604.05727)**
 
