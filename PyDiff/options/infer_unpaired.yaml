@@ -1,0 +1,103 @@
+  # general settings
+  name: test_Unpaired
+  model_type: PyDiffModel
+  num_gpu: 1
+  manual_seed: 1
+  #lol_v1,lolv2_real,lolv2_syn,LSRW_NK,LSRW_HW
+  # dataset and data loader settings
+  datasets:
+    test:
+      name: test
+      type: LOL_Dataset
+      gt_root: "./dataset/NPE"
+      input_root: "./dataset/NPE"
+      concat_with_hiseq: true
+      concat_with_position_encoding: true
+      input_mode: ~
+      divide: 32
+      hiseq_random_cat: true
+      mean: [ 0,0,0 ]
+      std: [ 1,1,1 ]
+      use_flip: false
+      # data loader
+      bright_aug: false
+      bright_aug_range: [ 0.5, 1.5 ]
+
+      use_shuffle: false
+      num_worker_per_gpu: 4
+      batch_size_per_gpu: 1
+      prefetch_mode: cuda
+      dataset_enlarge_ratio: 1
+      pin_memory: ~
+
+  # network structures
+  network_unet:
+    type: SR3UNet
+    in_channel: 13
+    out_channel: 3
+    inner_channel: 64
+    norm_groups: 32
+    channel_mults: [ 1,2,4,8,8 ]
+    attn_res: [ 16 ]
+    res_blocks: 2
+    dropout: 0.2
+    divide: 16
+
+  network_ddpm:
+    type: GaussianDiffusion
+    image_size: 128
+    channels: 3
+    conditional: true
+    pyramid_list: [ 1,1,2,2 ]
+
+  ddpm_schedule:
+    schedule: "linear"
+    n_timestep: 1000
+    linear_start: !!float 4e-5
+    linear_end: !!float 1e-2
+
+  path:
+    pretrain_network_g: "./pretrained_models/lolv1/net_g_1000000_GT_H_P.pth"
+    param_key_g: params
+    strict_load_g: True
+    experiments_root: D:/LLIE/Diffusion/PyDIff-main
+    results: D:/LLIE/Diffusion/PyDIff-main/results
+
+  # testing settings
+  val:
+    suffix: ''
+    cal_score: true
+    split_log: true
+    fix_seed: true
+    use_up_v2: true
+    only_save_sr: true
+    pyramid_list: [ 1,1,1,2,2,2,4,4,4,4 ]
+    #   1,1,1,1,1,1,1,1,1,1,
+    #    2,2,2,2,2,2,2,2,2,2,
+    ddim_eta: !!float 0.0
+    ddim_timesteps: 10
+    use_kind_align: false
+    cal_all: true
+    show_all: true
+    val_freq: !!float 5000
+    save_img: true
+
+    metrics:
+      psnr: # metric name, can be arbitrary
+        type: calculate_psnr
+        crop_border: 0
+        test_y_channel: false
+      # ssim:
+      #   type: calculate_ssim_lol
+      # lpips:
+      #   type: calculate_lpips_lol
+
+  # logging settings
+  logger:
+    print_freq: 1
+    use_tb_logger: false
+
+  # dist testing settings
+  dist_params:
+    backend: nccl
+    port: 29500
