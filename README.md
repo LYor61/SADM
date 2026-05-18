@@ -1,68 +1,109 @@
-README.md
-Single-Stage Signal Attenuation Diffusion Model for Low-Light Image Enhancement and Denoising
-Official PyTorch implementation of SADM (Signal Attenuation Diffusion Model), arXiv:2604.05727.
-https://doi.org/10.48550/arXiv.2604.05727Paper Link: 
+SADM GitHub 美化README（可直接复制粘贴）
+下面为全部可直接复制的代码，全选复制、粘贴到GitHub仓库README.md即可，无需修改。
+# Single-Stage Signal Attenuation Diffusion Model for Low-Light Image Enhancement and Denoising
+**Official PyTorch implementation of SADM (arXiv:2604.05727)**
 
-📌 Abstract
-Diffusion models excel at image restoration via probabilistic modeling of forward noise addition and reverse denoising, and their ability to handle complex noise while preserving fine details makes them well-suited for Low-Light Image Enhancement (LLIE). Mainstream diffusion based LLIE methods either adopt a two-stage pipeline or an auxiliary correction network to refine U-Net outputs, which severs the intrinsic link between enhancement and denoising and leads to suboptimal performance owing to inconsistent optimization objectives.
-To address these issues, we propose the Signal Attenuation Diffusion Model (SADM), a novel diffusion process that integrates the signal attenuation mechanism into the diffusion pipeline, enabling simultaneous brightness adjustment and noise suppression in a single stage. Specifically, the signal attenuation coefficient simulates the inherent signal attenuation of low-light degradation in the forward noise addition process, encoding the physical priors of low-light degradation to explicitly guide reverse denoising toward the concurrent optimization of brightness recovery and noise suppression.
-Our method eliminates the need for extra correction modules or staged training relied on by existing diffusion-based LLIE methods. We validate that our design maintains consistency with Denoising Diffusion Implicit Models (DDIM) via multi-scale pyramid sampling, balancing interpretability, restoration quality, and computational efficiency.
+[![arXiv](https://img.shields.io/badge/arXiv-2604.05727-b31b1b.svg)](https://arxiv.org/abs/2604.05727)
+[![DOI](https://img.shields.io/badge/DOI-10.48550/arXiv.2604.05727-228be6)](https://doi.org/10.48550/arXiv.2604.05727)
+[![Python](https://img.shields.io/badge/Python-3.9+-34d399.svg)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-1.10+-f97316.svg)](https://pytorch.org/)
+[![License](https://img.shields.io/badge/License-Academic%20Only-red.svg)](#license)
 
-📁 Project Structure
+---
+
+## 📖 Introduction
+Diffusion models have achieved remarkable success in image restoration due to their powerful probabilistic modeling and fine-detail preservation capability. However, most existing diffusion-based low-light image enhancement (LLIE) methods adopt **two-stage pipelines** or additional correction networks, which break the intrinsic correlation between brightness enhancement and noise suppression, leading to inconsistent optimization objectives and limited restoration performance.
+
+To tackle these issues, we propose a **Signal Attenuation Diffusion Model (SADM)**:
+✅ Integrate signal attenuation mechanism into diffusion forward process
+✅ Single-stage simultaneous brightness adjustment and denoising
+✅ Explicitly model low-light physical degradation priors
+✅ Eliminate extra correction modules & staged training
+✅ Compatible with DDIM sampling for high efficiency & interpretability
+
+---
+
+## 🗂️ Project Structure
+```
+SADM/
 ├── BasicSR-light/         # Simplified BasicSR environment
-├── PyDiff/                # Core diffusion model code
-│   ├── archs/             # Network architecture (UNet, DDPM)
-│   ├── data/              # Dataloader for LOL dataset
-│   ├── models/            # Training & inference pipeline
-│   ├── options/           # Configuration files
-│   └── scripts/           # Common tools
-├── dataset/               # Low-light dataset folder
+├── PyDiff/                # Core diffusion code
+│   ├── archs/             # UNet & DDPM architecture
+│   ├── data/              # LOL dataset dataloader
+│   ├── models/            # Train & inference pipeline
+│   ├── options/           # YAML configuration files
+│   └── scripts/           # Auxiliary tool scripts
+├── dataset/               # Low-light datasets
 ├── pretrained_models/     # Pre-trained checkpoints
 ├── test.py                # Inference code
 ├── train.py               # Training code
 ├── metrics.py             # Evaluation metrics
-├── environment.yml        # Conda environment configuration
+└── environment.yml        # Conda environment config
+```
 
-🔧 Environment Installation
-1. Create conda environment
+---
 
+## ⚙️ Environment Installation
+### 1. Create Conda Environment
+```bash
 conda env create -f environment.yml
 conda activate torch39
+```
 
-2. Install dependencies
-
+### 2. Install Dependencies
+```bash
 cd PyDiff
 pip install -e .
 cd ../BasicSR-light
 pip install -e .
+```
 
-📊 Dataset Preparation
-We use the public LOL dataset for training and evaluation:
-- LOL-v1: 485 training pairs / 15 testing pairs
-- LOL-v2-real: Real low-light scenes
-- LOL-v2-syn: Synthetic low-light scenes
-Put datasets into dataset/ folder and modify the yaml configuration file.
-🚀 Quick Test (Inference)
+---
 
+## 📂 Dataset Preparation
+We use the public LOL datasets for training and evaluation:
+- **LOL-v1**: 485 training pairs / 15 testing pairs
+- **LOL-v2-real**: Real-world low-light scenes
+- **LOL-v2-syn**: Synthetic low-light scenes
+  🔗 **Baidu Netdisk**:  https://pan.baidu.com/s/1bRHaHVIwwaNtDVAI0iAVfQ?pwd=SADM
+  🔑 **Extract Code**: `SADM`
+
+---
+
+## 🚀 Quick Inference
+```bash
 python test.py -opt PyDiff/options/infer_v1.yaml
+```
+Enhanced results will be saved in the visualization folder.
 
-The enhanced images will be saved in the visualization folder.
-🏋️ Training
-Modify training parameters in PyDiff/options/train_v1.yaml, then run:
-
+## 🏋️ Training
+Modify hyperparameters in `PyDiff/options/train_v1.yaml`, then run:
+```bash
 python train.py -opt PyDiff/options/train_v1.yaml
+```
 
-📈 Evaluation Metrics
-This code supports mainstream low-light image evaluation metrics:
-- PSNR
-- SSIM
-- LPIPS
-📎 Pre-trained Weights
-Pre-trained models for LOLv1 are placed in pretrained_models/lolv1.
-You can directly use them from Baidu(https://pan.baidu.com/s/1HUDTolLpL4AXNI6BUxfF8Q?pwd=SADM 提取码: SADM) for inference without retraining.
-📄 Citation
-If you use this code for your research, please cite our paper:
+---
 
+## 📊 Evaluation Metrics
+We support mainstream low-light image evaluation metrics:
+- **PSNR** (Peak Signal-to-Noise Ratio)
+- **SSIM** (Structural Similarity)
+- **LPIPS** (Learned Perceptual Similarity)
+
+---
+
+## 📥 Pre-trained Weights
+The pre-trained weights for LOL-v1/LOLv2-real/LOLv2-syn are available:
+🔗 **Baidu Netdisk**: https://pan.baidu.com/s/1HUDTolLpL4AXNI6BUxfF8Q?pwd=SADM
+🔑 **Extract Code**: `SADM`
+
+Put weights into `pretrained_models/lolv1/` for direct inference.
+
+---
+
+## 📝 Citation
+If you find this work useful for your research, please cite:
+```bibtex
 @article{liu2026single,
   title={Single-Stage Signal Attenuation Diffusion Model for Low-Light Image Enhancement and Denoising},
   author={Liu, Ying and Zhang, Junchao and Wu, Caiyun},
@@ -70,8 +111,12 @@ If you use this code for your research, please cite our paper:
   year={2026},
   doi={10.48550/arXiv.2604.05727}
 }
+```
 
-🪪 License
-This project is open-source for academic research only. Commercial use is prohibited.
-🌟 Star
-If this repository helps you, please give a Star ⭐, thank you very much!
+---
+
+## 🪪 License
+This project is **only for academic research**. Commercial use is strictly prohibited.
+
+## ⭐ Star
+If this repository helps you, please give a star ⭐. Thank you for your support!
