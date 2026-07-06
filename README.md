@@ -97,6 +97,10 @@ The pre-trained weights for LOL-v1/LOLv2-real/LOLv2-syn are available:
 
 Put weights into `pretrained_models/lolv1/` for direct inference.
 
+**Experimental Visualization Results**
+All visual results in LOLv1, LOLv2_real, LOLv2_syn and ablation study are provided in the shared Baidu Netdisk file:
+🔗 **Baidu Netdisk**:  https://pan.baidu.com/s/1v2_dZnMrsee4rtqhTjayfA?pwd=SADM
+🔑 **Extract Code**: `SADM`
 ---
 
 ## 📝 Citation
