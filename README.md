@@ -8,19 +8,7 @@
 [![License](https://img.shields.io/badge/License-Academic%20Only-red.svg)](#license)
 
 ---
-
-## 📖 Introduction
-Diffusion models have achieved remarkable success in image restoration due to their powerful probabilistic modeling and fine-detail preservation capability. However, most existing diffusion-based low-light image enhancement (LLIE) methods adopt **two-stage pipelines** or additional correction networks, which break the intrinsic correlation between brightness enhancement and noise suppression, leading to inconsistent optimization objectives and limited restoration performance.
-
-To tackle these issues, we propose a **Signal Attenuation Diffusion Model (SADM)**:
-✅ Integrate signal attenuation mechanism into diffusion forward process
-✅ Single-stage simultaneous brightness adjustment and denoising
-✅ Explicitly model low-light physical degradation priors
-✅ Eliminate extra correction modules & staged training
-✅ Compatible with DDIM sampling for high efficiency & interpretability
-
 ---
-
 ## 🗂️ Project Structure
 ```
 SADM/
@@ -61,10 +49,12 @@ pip install -e .
 ## 📂 Dataset Preparation
 We use the public LOL datasets for training and evaluation:
 - **LOL-v1**: 485 training pairs / 15 testing pairs
-- **LOL-v2-real**: Real-world low-light scenes
-- **LOL-v2-syn**: Synthetic low-light scenes
-  🔗 **Baidu Netdisk**:  https://pan.baidu.com/s/1bRHaHVIwwaNtDVAI0iAVfQ?pwd=SADM
-  🔑 **Extract Code**: `SADM`
+- **LOL-v2-real**: 689 training pairs / 100 testing pairs
+- **LOL-v2-syn**: 689 training pairs / 100 testing pairs
+  
+🔗 **Baidu Netdisk**:  https://pan.baidu.com/s/1bRHaHVIwwaNtDVAI0iAVfQ?pwd=SADM
+
+🔑 **Extract Code**: `SADM`
 
 ---
 
@@ -98,9 +88,11 @@ The pre-trained weights for LOL-v1/LOLv2-real/LOLv2-syn are available:
 Put weights into `pretrained_models/lolv1/` for direct inference.
 
 **Experimental Visualization Results**
+
 All visual results in LOLv1, LOLv2_real, LOLv2_syn and ablation study are provided in the shared Baidu Netdisk file:
-🔗 **Baidu Netdisk**:  https://pan.baidu.com/s/1v2_dZnMrsee4rtqhTjayfA?pwd=SADM
+🔗 **Baidu Netdisk**: https://pan.baidu.com/s/1v2_dZnMrsee4rtqhTjayfA?pwd=SADM
 🔑 **Extract Code**: `SADM`
+
 ---
 
 ## 📝 Citation
